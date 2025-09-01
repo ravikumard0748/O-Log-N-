@@ -1,0 +1,43 @@
+name: Contest Reminders
+
+on:
+  schedule:
+    # Sunday 7:30 AM IST (02:00 UTC)
+    - cron: "0 2 * * 0"
+    # Wednesday 7:30 PM IST (14:00 UTC)
+    - cron: "30 14 * * 3"
+    # Saturday 7:30 PM IST (14:00 UTC)
+    - cron: "30 14 * * 6"
+    # Saturday 10:00 AM IST (04:30 UTC)
+    - cron: "30 4 * * 6"
+    # Thursday 7:30 PM IST (14:00 UTC)
+    - cron: "30 14 * * 4"
+  workflow_dispatch: # manual run if needed
+
+jobs:
+  reminder-job:
+    runs-on: ubuntu-latest
+    env:
+      TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+      TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+      TO_NUMBER: ${{ secrets.TO_NUMBER }}
+      FROM_NUMBER: ${{ secrets.FROM_NUMBER }}
+      WHATSAPP_FROM: ${{ secrets.WHATSAPP_FROM }}
+      WHATSAPP_TO: ${{ secrets.WHATSAPP_TO }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt || true
+          pip install twilio python-dotenv
+
+      - name: Run reminder script
+        run: python main.py
