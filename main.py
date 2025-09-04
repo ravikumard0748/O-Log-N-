@@ -60,36 +60,29 @@ def every_thurs_naukri_7_30pm():
     msg = BASE_MESSAGE + "Naukri/Code360: https://www.naukri.com/code360/contests"
     send_whatsapp(msg)
 
-# The new function to check the time and call the appropriate reminder
 def run_scheduled_task():
     now_utc = datetime.datetime.utcnow()
-    day_of_week = now_utc.weekday()  # Monday is 0 and Sunday is 6
+    day_of_week = now_utc.weekday()  
     hour = now_utc.hour
     minute = now_utc.minute
 
-    # Sunday 7:30 AM IST (02:00 UTC)
     if day_of_week == 6 and hour == 2 and minute == 0:
         every_sun_leetcode_7_30am()
     
-    # Wednesday 7:30 PM IST (14:00 UTC)
     elif day_of_week == 2 and hour == 14 and minute == 30:
         every_wed_codechef_7_30pm()
 
-    # Saturday 7:30 PM IST (14:00 UTC)
     elif day_of_week == 5 and hour == 14 and minute == 30:
         every_sat_leetcode_7_30pm()
 
-    # Saturday 10:00 AM IST (04:30 UTC)
     elif day_of_week == 5 and hour == 4 and minute == 30:
         every_sat_codechef_10am()
 
-    # Thursday 7:30 PM IST (14:00 UTC)
     elif day_of_week == 3 and hour == 14 and minute == 30:
         every_thurs_naukri_7_30pm()
     
     else:
         print("No scheduled task to run at this time.")
 
-# This line ensures the function is called when the script is run
 if __name__ == "__main__":
     run_scheduled_task()
